@@ -1,0 +1,5 @@
+{
+  "jwtSecret": "newsecrettoken",
+  "salt": 10,
+  "tokenExpiration": 360000
+}
