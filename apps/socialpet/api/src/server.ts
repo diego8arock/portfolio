@@ -4,6 +4,7 @@ import { UsersController } from "./controller/user.controller";
 import dotenv from "dotenv";
 import Logger from "../lib/logger";
 import httpLogger from "../config/httpLogger";
+import { Utils } from "./util/Utils";
 
 class Server {
   private app: express.Application;
@@ -11,24 +12,27 @@ class Server {
   constructor() {
     if (process.env.NODE_ENV !== "production") dotenv.config();
     this.app = express();
-    this.config();
-    this.routes();
   }
 
-  public config() {
+  public async config() {
     this.app.set("port", process.env.PORT || 3000);
     this.app.use(express.urlencoded({ extended: true }), express.json());
     this.app.use(httpLogger);
   }
 
-  public async routes() {
+  public async bd() {
+    const dbUrl = process.env.DATABASE_URL!;
+    if (!dbUrl) Logger.error("process.env.DATABASE_URL is empty");
+    const dbconfig = Utils.parserDBUrl(dbUrl);
+    Logger.debug(`DB config: ${JSON.stringify(dbconfig)}`);
+
     await createConnection({
       type: "postgres",
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || "5432"),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: dbconfig.host,
+      port: dbconfig.port,
+      username: dbconfig.username,
+      password: dbconfig.password,
+      database: dbconfig.database,
       entities: ["build/src/database/entities/**/*.js"],
       synchronize: true,
       logging: process.env.DB_LOGGING?.toLowerCase() == "true",
@@ -39,6 +43,9 @@ class Server {
           : { rejectUnauthorized: false },
     });
     Logger.info(`Connection to DB established`);
+  }
+
+  public async routes() {
     this.userController = new UsersController();
     this.app.use("/api/users/", this.userController.router);
     this.app.get("/", (req: Request, res: Response) => {
@@ -58,4 +65,8 @@ class Server {
 }
 
 const server = new Server();
-server.start();
+server
+  .config()
+  .then(() =>
+    server.bd().then(() => server.routes().then(() => server.start()))
+  );
