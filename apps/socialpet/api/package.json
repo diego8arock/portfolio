@@ -7,7 +7,7 @@
     "node": "14.17.0"
   },
   "scripts": {
-    "tsc": "tsc ",
+    "postinstall": "tsc",
     "start": "export NODE_ENV=development && tsc  && node ./build/server.js"
   },
   "repository": {
