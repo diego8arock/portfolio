@@ -2,7 +2,7 @@
   "name": "socialpet-api",
   "version": "0.0.1",
   "description": "nodejs api for a social network demo",
-  "main": "server.js",
+  "main": "src/server.js",
   "engines": {
     "node": "14.17.0"
   },
