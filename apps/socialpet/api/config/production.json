@@ -1,0 +1,5 @@
+{
+  "jwtSecret": "aa318eb48473b892e7a9edeae88bdb16",
+  "salt": 10,
+  "tokenExpiration": 360000
+}
