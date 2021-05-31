@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "nodejs api for a social network demo",
   "main": "server.js",
+  "engines": {
+    "node": "14.17.0"
+  },
   "scripts": {
     "tsc": "tsc ",
     "start": "export NODE_ENV=development && tsc  && node ./build/server.js"
