@@ -17,8 +17,8 @@ const levels = {
 // if it was run in production, show only warn and error messages.
 const level = () => {
   const env = process.env.NODE_ENV || "development";
-  const isDevelopment = env === "development";
-  return isDevelopment ? "debug" : "warn";
+  const isDevelopmentOrTest = env === "development" || env === "test";
+  return isDevelopmentOrTest ? "debug" : "warn";
 };
 
 // Define different colors for each level.
@@ -43,9 +43,7 @@ const format = winston.format.combine(
   // Tell Winston that the logs must be colored
   winston.format.colorize({ all: true }),
   // Define the format of the message showing the timestamp, the level and the message
-  winston.format.printf(
-    (info) => `${info.timestamp} ${info.level}: ${info.message}`
-  )
+  winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
 );
 
 // Define which transports the logger must use to print out messages.
