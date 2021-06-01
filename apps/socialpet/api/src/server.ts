@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import Logger from "../lib/logger";
 import httpLogger from "../config/httpLogger";
 import { Utils } from "./util/Utils";
+import { auth } from "./middleware/Authenticator";
 
 class Server {
   private app: express.Application;
@@ -16,6 +17,7 @@ class Server {
 
   public async config() {
     this.app.set("port", process.env.PORT || 3000);
+    this.app.use(auth);
     this.app.use(express.urlencoded({ extended: true }), express.json());
     this.app.use(httpLogger);
   }
@@ -37,10 +39,7 @@ class Server {
       synchronize: true,
       logging: process.env.DB_LOGGING?.toLowerCase() == "true",
       name: "default",
-      ssl:
-        process.env.NODE_ENV == "development"
-          ? false
-          : { rejectUnauthorized: false },
+      ssl: process.env.NODE_ENV == "development" ? false : { rejectUnauthorized: false },
     });
     Logger.info(`Connection to DB established`);
   }
@@ -55,18 +54,10 @@ class Server {
 
   public start() {
     this.app.listen(this.app.get("port"), () => {
-      Logger.info(
-        `Server is listening ${this.app.get("port")} port on ${
-          process.env.NODE_ENV
-        } environment.`
-      );
+      Logger.info(`Server is listening ${this.app.get("port")} port on ${process.env.NODE_ENV} environment.`);
     });
   }
 }
 
 const server = new Server();
-server
-  .config()
-  .then(() =>
-    server.bd().then(() => server.routes().then(() => server.start()))
-  );
+server.config().then(() => server.bd().then(() => server.routes().then(() => server.start())));
