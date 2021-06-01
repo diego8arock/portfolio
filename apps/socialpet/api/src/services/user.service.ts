@@ -2,9 +2,8 @@ import { getConnection } from "typeorm";
 import { UserEntity } from "../database/entities/UserEntity";
 import { UserRepository } from "../database/repository/UserRepository";
 import { HttpRequestCodes } from "../util/HttpResponseCodes";
-import { ServiceResponse } from "../util/responses/ServiceResponse";
-import { ServiceResponseFactory } from "../util/responses/ServiceResponseFactory";
-import { UserServiceResponse } from "../util/responses/UserServiceResponse";
+import { ServiceResponse } from "../util/responses/serviceResponses/ServiceResponse";
+import { ServiceResponseFactory } from "../util/responses/serviceResponses/ServiceResponseFactory";
 
 export class UserService {
   private userRepository: UserRepository;
