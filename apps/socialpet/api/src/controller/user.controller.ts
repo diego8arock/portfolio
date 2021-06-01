@@ -4,8 +4,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "config";
 import { UserService } from "../services/user.service";
-import { ServiceResponse } from "../util/responses/ServiceResponse";
+import { ServiceResponse } from "../util/responses/serviceResponses/ServiceResponse";
 import { HttpRequestCodes } from "../util/HttpResponseCodes";
+import { ControllerResponse } from "../util/responses/controllerResponses/ControllerResponse";
+import Logger from "../../lib/logger";
+import { validate, userSingUpValidatoRules } from "../middleware/Validator";
 
 export class UsersController {
   public router: Router;
@@ -25,9 +28,7 @@ export class UsersController {
       this.serviceResponse = await this.userService.isEmailUnique(email);
 
       if (!this.serviceResponse.success) {
-        return res
-          .status(this.serviceResponse.statusCode)
-          .send(this.serviceResponse.errors);
+        return ControllerResponse.createErrorResponse(res, this.serviceResponse);
       }
 
       let user = new UserEntity();
@@ -43,9 +44,7 @@ export class UsersController {
       this.serviceResponse = await this.userService.save(user);
 
       if (!this.serviceResponse.success) {
-        return res
-          .status(this.serviceResponse.statusCode)
-          .send(this.serviceResponse.errors);
+        return ControllerResponse.createErrorResponse(res, this.serviceResponse);
       }
 
       // Return jsonwebtoken
@@ -55,24 +54,17 @@ export class UsersController {
         },
       };
 
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: config.get("tokenExpiration") },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      jwt.sign(payload, config.get("jwtSecret"), { expiresIn: config.get("tokenExpiration") }, (error, token) => {
+        if (error) throw error;
+        res.status(HttpRequestCodes.CREATED).json({ token });
+      });
     } catch (error) {
-      console.log(error);
-      return res
-        .status(HttpRequestCodes.SERVER_ERROR)
-        .send({ errors: ["Server error"] });
+      Logger.error(error);
+      return res.status(HttpRequestCodes.SERVER_ERROR).send({ errors: ["Server error"] });
     }
   };
 
   public routes() {
-    this.router.post("/", this.signUp);
+    this.router.post("/", userSingUpValidatoRules(), validate, this.signUp);
   }
 }
