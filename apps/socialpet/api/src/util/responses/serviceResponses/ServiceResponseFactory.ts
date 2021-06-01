@@ -1,4 +1,4 @@
-import { UserEntity } from "../../database/entities/UserEntity";
+import { UserEntity } from "../../../database/entities/UserEntity";
 import { ServiceResponse } from "./ServiceResponse";
 import { UserServiceResponse } from "./UserServiceResponse";
 
