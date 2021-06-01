@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import Logger from "../lib/logger";
 import httpLogger from "../config/httpLogger";
 import { Utils } from "./util/Utils";
-import { auth } from "./middleware/Authenticator";
 
 class Server {
   private app: express.Application;
@@ -17,7 +16,6 @@ class Server {
 
   public async config() {
     this.app.set("port", process.env.PORT || 3000);
-    this.app.use(auth);
     this.app.use(express.urlencoded({ extended: true }), express.json());
     this.app.use(httpLogger);
   }
