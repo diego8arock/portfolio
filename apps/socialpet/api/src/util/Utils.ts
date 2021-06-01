@@ -1,8 +1,6 @@
 export class Utils {
   public static parserDBUrl(dbUrl: string) {
-    const credentialsAndConnection = dbUrl
-      .replace("postgres://", "")
-      .split("@");
+    const credentialsAndConnection = dbUrl.replace("postgres://", "").split("@");
     const userPassword = credentialsAndConnection[0].split(":");
     const hostPortDbName = credentialsAndConnection[1].split("/");
     const hostPort = hostPortDbName[0].split(":");
