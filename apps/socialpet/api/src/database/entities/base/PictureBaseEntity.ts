@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column } from "typeorm";
+import { PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 export abstract class PictureBaseEntity {
   @PrimaryGeneratedColumn()
@@ -10,8 +10,11 @@ export abstract class PictureBaseEntity {
   @Column()
   description!: string;
 
-  @Column({ type: "date" })
-  date!: Date;
+  @CreateDateColumn()
+  created!: Date;
+
+  @UpdateDateColumn()
+  modified!: Date;
 
   @Column({ default: true })
   isActive!: boolean;

@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { CommentEntity } from "./CommentEntity";
 import { LikeEntity } from "./LikeEntity";
 import { UserEntity } from "./UserEntity";
@@ -11,8 +19,11 @@ export class PostEntity {
   @Column({ length: 200 })
   message!: string;
 
-  @Column({ type: "date" })
-  date!: Date;
+  @CreateDateColumn()
+  created!: Date;
+
+  @UpdateDateColumn()
+  modified!: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.likes, { nullable: false })
   user!: UserEntity;
