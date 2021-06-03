@@ -4,11 +4,12 @@ import { UsersController } from "./controller/user.controller";
 import dotenv from "dotenv";
 import Logger from "../lib/logger";
 import httpLogger from "../config/httpLogger";
-import { Utils } from "./util/Utils";
+import { Utils as util } from "./util/Utils";
 
 class Server {
   public app: express.Application;
   private userController!: UsersController;
+
   constructor() {
     if (process.env.NODE_ENV !== "production") dotenv.config();
     this.app = express();
@@ -27,9 +28,7 @@ class Server {
   public async bd() {
     const dbUrl = process.env.DATABASE_URL!;
     if (!dbUrl) Logger.error("process.env.DATABASE_URL is empty");
-    const dbconfig = Utils.parserDBUrl(dbUrl);
-    const logging = process.env.DB_LOGGING?.toLowerCase() == "true";
-    const ssl = process.env.NODE_ENV != "production" ? false : { rejectUnauthorized: false };
+    const dbconfig = util.parserDBUrl(dbUrl);
     const entities =
       process.env.NODE_ENV != "test"
         ? ["build/src/database/entities/**/*.js"]
@@ -46,9 +45,9 @@ class Server {
         database: dbconfig.database,
         entities: entities,
         synchronize: true,
-        logging: logging,
+        logging: dbconfig.logging,
         name: "default",
-        ssl: ssl,
+        ssl: dbconfig.ssl,
       });
       Logger.debug(`Connection to DB established`);
     } catch (error) {
