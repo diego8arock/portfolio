@@ -15,3 +15,7 @@ export function validate(req: Request, res: Response, next: () => any) {
 export function userSingUpValidatoRules() {
   return [body("email").isEmail(), body("password").isLength({ min: 8 })];
 }
+
+export function authLoginValidationRules() {
+  return [body("email").isEmail(), body("password").isLength({ min: 8 })];
+}
