@@ -1,4 +1,5 @@
 import { getConnection } from "typeorm";
+import Logger from "../../lib/logger";
 import { UserEntity } from "../database/entities/UserEntity";
 import { UserRepository } from "../database/repository/UserRepository";
 import { HttpRequestCodes } from "../util/HttpResponseCodes";
@@ -20,7 +21,7 @@ export class UserService {
         response.setError(`User with email ${email} already exists`, HttpRequestCodes.BAD_REQUEST);
       }
     } catch (error) {
-      console.log(error);
+      Logger.error(error);
       response.setError(error, HttpRequestCodes.SERVER_ERROR);
     }
     return response;
@@ -33,17 +34,31 @@ export class UserService {
       if (user) response.user = user;
       else response.setError(`User with email ${email} was not found`, HttpRequestCodes.RESOURCE_NOT_FOUND);
     } catch (error) {
+      Logger.error(error);
       response.setError(error, HttpRequestCodes.SERVER_ERROR);
     }
     return response;
   };
 
-  public save = async (user: UserEntity): Promise<ServiceResponse> => {
+  public findById = async (id: number): Promise<UserServiceResponse> => {
+    const response = srf.createDefaultUserServiceResponse();
+    try {
+      const user = await this.userRepository.findOne({ id: id });
+      if (user) response.user = user;
+      else response.setError(`User  was not found`, HttpRequestCodes.RESOURCE_NOT_FOUND);
+    } catch (error) {
+      Logger.error(error);
+      response.setError(error, HttpRequestCodes.SERVER_ERROR);
+    }
+    return response;
+  };
+
+  public create = async (user: UserEntity): Promise<ServiceResponse> => {
     let response = srf.createDefaultServiceResponse();
     try {
       await this.userRepository.save(user);
     } catch (error) {
-      console.log(error);
+      Logger.error(error);
       response.setError(error, HttpRequestCodes.SERVER_ERROR);
     }
     return response;
