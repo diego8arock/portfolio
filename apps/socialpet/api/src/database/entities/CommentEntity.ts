@@ -16,7 +16,7 @@ export class CommentEntity {
   @Column({ length: 200 })
   message!: string;
 
-  @Column({ type: "datetime" })
+  @Column({ type: "date" })
   date!: Date;
 
   @Column({ default: true })

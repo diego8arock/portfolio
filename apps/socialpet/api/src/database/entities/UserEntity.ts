@@ -29,20 +29,20 @@ export class UserEntity {
   friends!: FriendEntity[];
 
   @OneToMany(() => RequestEntity, (request) => request.user)
-  requests: RequestEntity[] = [];
+  requests!: RequestEntity[];
 
   @OneToMany(() => PostEntity, (post) => post.user)
-  posts: PostEntity[] = [];
+  posts!: PostEntity[];
 
   @OneToMany(() => LikeEntity, (like) => like.user)
-  likes: LikeEntity[] = [];
+  likes!: LikeEntity[];
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
-  comments: CommentEntity[] = [];
+  comments!: CommentEntity[];
 
   @OneToMany(() => PetEntity, (pet) => pet.user)
-  pets: PetEntity[] = [];
+  pets!: PetEntity[];
 
   @OneToMany(() => UserPictureEntity, (up) => up.user)
-  pictures: UserPictureEntity[] = [];
+  pictures!: UserPictureEntity[];
 }

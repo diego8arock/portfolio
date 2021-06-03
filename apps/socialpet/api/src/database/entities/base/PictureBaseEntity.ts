@@ -10,7 +10,7 @@ export abstract class PictureBaseEntity {
   @Column()
   description!: string;
 
-  @Column({ type: "datetime" })
+  @Column({ type: "date" })
   date!: Date;
 
   @Column({ default: true })

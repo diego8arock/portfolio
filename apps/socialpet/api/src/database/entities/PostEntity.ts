@@ -11,7 +11,7 @@ export class PostEntity {
   @Column({ length: 200 })
   message!: string;
 
-  @Column({ type: "datetime" })
+  @Column({ type: "date" })
   date!: Date;
 
   @ManyToOne(() => UserEntity, (user) => user.likes, { nullable: false })
