@@ -30,3 +30,12 @@ describe("/POST users old sing up", () => {
     res.body.should.have.property("errors");
   });
 });
+
+describe("/POST users login correct", () => {
+  it("it should return token", async () => {
+    const res = await chai.request(app).post("/api/auth").send(userMain);
+    console.log(res.body);
+    res.should.have.status(200);
+    res.body.should.have.property("token");
+  });
+});
