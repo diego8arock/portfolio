@@ -12,10 +12,12 @@ class Server {
   constructor() {
     if (process.env.NODE_ENV !== "production") dotenv.config();
     this.app = express();
+    this.config();
+    this.bd().then(() => this.routes());
     Logger.debug(`Server created.`);
   }
 
-  public async config() {
+  public config() {
     this.app.set("port", process.env.PORT || 3000);
     this.app.use(express.urlencoded({ extended: true }), express.json());
     this.app.use(httpLogger);
@@ -54,7 +56,7 @@ class Server {
     }
   }
 
-  public async routes() {
+  public routes() {
     this.userController = new UsersController();
     this.app.use("/api/users/", this.userController.router);
     this.app.get("/", (req: Request, res: Response) => {
@@ -71,5 +73,5 @@ class Server {
 }
 
 const server = new Server();
-server.config().then(() => server.bd().then(() => server.routes().then(() => server.start())));
+server.start();
 export default server.app;
