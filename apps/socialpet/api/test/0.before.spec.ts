@@ -17,3 +17,9 @@ before((done) => {
     done();
   }, 2000);
 });
+
+after(() => {
+  setTimeout(() => {
+    process.exit(0);
+  }, 1000);
+});
