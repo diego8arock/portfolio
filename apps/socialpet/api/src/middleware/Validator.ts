@@ -19,3 +19,11 @@ export function userSingUpValidatoRules() {
 export function authLoginValidationRules() {
   return [body("email").isEmail(), body("password").isLength({ min: 8 })];
 }
+
+export function postAddPostValdationRules() {
+  return [body("message").exists().isLength({ min: 1, max: 200 })];
+}
+
+export function postModiyPostValdationRules() {
+  return [body("message").exists().isLength({ min: 1, max: 200 }), body("postId").exists().isNumeric()];
+}
