@@ -5,10 +5,15 @@ import dotenv from "dotenv";
 import Logger from "../lib/logger";
 import httpLogger from "../config/httpLogger";
 import { Utils as util } from "./util/Utils";
+import { AuthController } from "./controller/auth.controller";
+import { HttpRequestCodes } from "./util/HttpResponseCodes";
+import { PostController } from "./controller/post.controller";
 
 class Server {
   public app: express.Application;
   private userController!: UsersController;
+  private authController!: AuthController;
+  private postController!: PostController;
 
   constructor() {
     if (process.env.NODE_ENV !== "production") dotenv.config();
@@ -57,9 +62,13 @@ class Server {
 
   public routes() {
     this.userController = new UsersController();
+    this.authController = new AuthController();
+    this.postController = new PostController();
     this.app.use("/api/users/", this.userController.router);
+    this.app.use("/api/auth/", this.authController.router);
+    this.app.use("/api/posts/", this.postController.router);
     this.app.get("/", (req: Request, res: Response) => {
-      res.status(200).send("SocialPet API running...");
+      res.status(HttpRequestCodes.OK).send("SocialPet API running...");
     });
     Logger.debug(`Sever routes established`);
   }
