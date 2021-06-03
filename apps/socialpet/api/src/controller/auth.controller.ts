@@ -8,13 +8,14 @@ import { HttpRequestCodes } from "../util/HttpResponseCodes";
 import { ControllerResponse as cr } from "../util/responses/controllerResponses/ControllerResponse";
 import config from "config";
 
-export class Auth {
+export class AuthController {
   public router: Router;
   private userService: UserService;
 
   constructor() {
     this.userService = new UserService();
     this.router = Router();
+    this.routes();
   }
 
   public login = async (req: Request, res: Response) => {
@@ -42,7 +43,7 @@ export class Auth {
 
       jwt.sign(payload, config.get("jwtSecret"), { expiresIn: config.get("tokenExpiration") }, (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        return res.status(HttpRequestCodes.OK).json({ token });
       });
     } catch (error) {
       Logger.error(error);
