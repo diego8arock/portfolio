@@ -40,7 +40,7 @@ export class UsersController {
 
       user.password = await bcrypt.hash(password, salt);
 
-      serviceResponse = await this.userService.save(user);
+      serviceResponse = await this.userService.create(user);
 
       if (!serviceResponse.success) {
         return cr.createServiceErrorResponse(res, serviceResponse);
