@@ -14,7 +14,7 @@ describe("/POST create new post", () => {
     let res = await chai.request(app).post("/api/auth").send(userMain);
     const token = res.body.token;
     res = await chai.request(app).post("/api/posts").set("x-auth-token", token).send({ message: "test post" });
-    console.log(res.body);
+    console.log(`status: ${res.status}`);
     res.should.have.status(201);
   });
 });
@@ -32,7 +32,7 @@ describe("/POST modify post", () => {
       .put("/api/posts")
       .set("x-auth-token", token)
       .send({ postId: post?.id, message: "test post 2 modified" });
-    console.log(res.body);
+    console.log(`status: ${res.status}`);
     res.should.have.status(200);
   });
 });
