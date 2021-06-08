@@ -45,4 +45,8 @@ export class UserEntity {
 
   @OneToMany(() => UserPictureEntity, (up) => up.user)
   pictures!: UserPictureEntity[];
+
+  public getFullName = () => {
+    return this.firstName + " " + this.lastName;
+  };
 }
