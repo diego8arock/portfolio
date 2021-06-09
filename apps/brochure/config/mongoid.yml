@@ -3,13 +3,14 @@ development:
   clients:
     # Defines the default client. (required)
     default:
+      uri: <%= "#{ENV['MONGODB_DB_URL']}" %>
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: brochure_development
+      #database: brochure_development
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
-      hosts:
-        - localhost:27017
+      #hosts:
+      #  - localhost:27017
       options:
         # Note that all options listed below are Ruby driver client options (the mongo gem).
         # Please refer to the driver documentation of the version of the mongo gem you are using
@@ -104,7 +105,6 @@ development:
         # The file containing a set of concatenated certification authority certifications
         # used to validate certs passed from the other end of the connection.
         # ssl_ca_cert: /path/to/ca.cert
-
 
   # Configure Mongoid specific options. (optional)
   options:
