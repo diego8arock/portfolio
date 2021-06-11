@@ -1,0 +1,27 @@
+<%= form_with(model: like) do |form| %>
+  <% if like.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(like.errors.count, "error") %> prohibited this like from being saved:</h2>
+
+      <ul>
+        <% like.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :ip %>
+    <%= form.text_field :ip %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bulletinItem %>
+    <%= form.text_field :bulletinItem %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
