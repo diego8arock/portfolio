@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @bulletin_item.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @bulletin_item.body %>
+</p>
+
+<p>
+  <strong>Picture:</strong>
+  <%= @bulletin_item.picture %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @bulletin_item.date %>
+</p>
+
+<p>
+  <strong>Is active:</strong>
+  <%= @bulletin_item.is_active %>
+</p>
+
+<%= link_to 'Edit', edit_bulletin_item_path(@bulletin_item) %> |
+<%= link_to 'Back', bulletin_items_path %>
