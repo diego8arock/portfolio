@@ -4,6 +4,8 @@ extends RigidBody2D
 onready var notifier = $VisibilityNotifier2D
 
 export var speed : float = 200.0
+
+var damage
 var velocity = Vector2()
 
 # Called when the node enters the scene tree for the first time.
